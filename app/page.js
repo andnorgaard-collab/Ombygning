@@ -1,0 +1,1 @@
+export default function Home() { return (<main><h1>Ombygning</h1><p>Prototype</p></main>) }
