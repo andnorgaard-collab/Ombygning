@@ -1,0 +1,198 @@
+:root {
+  color-scheme: light;
+  --bg: #f3f7f6;
+  --card: #ffffff;
+  --ink: #122227;
+  --muted: #5d6f75;
+  --line: #d9e5e3;
+  --brand: #0d8f7a;
+  --brand-soft: #dff5ef;
+  --warn: #a66200;
+  --warn-soft: #fff2de;
+  --danger: #9e2d1f;
+  --danger-soft: #fde9e6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 16px 52px;
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.65rem, 3.5vw, 2.3rem);
+  margin-top: 8px;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-top: 6px;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+.lead {
+  color: var(--muted);
+  margin-top: 10px;
+  max-width: 70ch;
+}
+
+.eyebrow,
+.label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.healthGrid,
+.sectionGrid,
+.trades {
+  display: grid;
+  gap: 12px;
+}
+
+.healthGrid {
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  margin-top: 16px;
+}
+
+.statBox {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.statBox p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.statBox strong {
+  font-size: 1.4rem;
+}
+
+.pill {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pill.ok {
+  color: #1b6c59;
+  background: var(--brand-soft);
+}
+
+.pill.warn {
+  color: var(--warn);
+  background: var(--warn-soft);
+}
+
+.pill.danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.pill.idle {
+  color: #3d4b50;
+  background: #e9eff1;
+}
+
+.sectionGrid {
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+
+.stack {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.timelineItem,
+.blocker,
+.trade,
+.logItem {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.timelineItem header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.timelineItem span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+ul,
+ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+li {
+  margin-top: 6px;
+}
+
+.blocker p,
+.trade p,
+.logItem p {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.trades {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-top: 12px;
+}
+
+.trade {
+  display: grid;
+  gap: 8px;
+}
+
+.checklist {
+  margin-top: 12px;
+}

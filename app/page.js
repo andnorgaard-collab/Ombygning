@@ -1,77 +1,201 @@
+const projectHealth = [
+  { label: 'Beslutninger låst', value: '3 / 8', tone: 'warn' },
+  { label: 'Åbne afklaringer', value: '5', tone: 'danger' },
+  { label: 'Faggrupper i gang', value: '1 / 6', tone: 'ok' },
+]
+
+const weeklyPlan = [
+  {
+    week: 'Uge 18',
+    focus: 'Risiko og forberedelse',
+    tasks: [
+      'Book asbesttest og gennemgang af gamle materialer',
+      'Indhent plantegning fra kommunen / tidligere ejer',
+      'Saml billeder af alle rum i en delt mappe',
+    ],
+  },
+  {
+    week: 'Uge 19',
+    focus: 'Lås retning',
+    tasks: [
+      'Vælg foretrukken planløsning (A/B)',
+      'Fastlæg facadegreb og vinduesåbninger',
+      'Aftal beslutningsmøde med rådgiver',
+    ],
+  },
+  {
+    week: 'Uge 20',
+    focus: 'Klar til tilbud',
+    tasks: [
+      'Skriv kort projektbeskrivelse i punktform',
+      'Indhent tilbud fra murer, tømrer og VVS på samme oplæg',
+      'Læg foreløbig etapeplan med start/slut',
+    ],
+  },
+]
+
+const blockers = [
+  {
+    title: 'Planløsning ikke endeligt besluttet',
+    impact: 'Forsinker alle fag (el, VVS, tømrer)',
+    owner: 'Familien + rådgiver',
+    next: 'Beslutning senest fredag kl. 16:00',
+  },
+  {
+    title: 'Manglende afklaring af skjulte risici',
+    impact: 'Budgetusikkerhed og risiko for stop i udførelse',
+    owner: 'Rådgiver',
+    next: 'Bestil destruktiv prøve og rapport',
+  },
+  {
+    title: 'Ingen samlet tilbudspakke',
+    impact: 'Tilbud kan ikke sammenlignes direkte',
+    owner: 'Projektansvarlig',
+    next: 'Del én ensartet beskrivelse med alle håndværkere',
+  },
+]
+
 const trades = [
-  { name: 'Arkitekt og rådgiver', icon: '📐', status: 'Afventer oplæg', tone: 'wait', note: 'Næste beslutning: fastholde retning og få lukket planløsning.' },
-  { name: 'Murer', icon: '🧱', status: 'Ikke startet', tone: 'idle', note: 'Afventer endelig projektbeskrivelse og rækkefølge.' },
-  { name: 'Tømrer', icon: '🪵', status: 'Klar til dialog', tone: 'ready', note: 'Kan kobles på når åbninger, facade og indvendige vægge er besluttet.' },
-  { name: 'VVS', icon: '🚿', status: 'Afklaring', tone: 'wait', note: 'Bad, rørføring og eventuel kælder skal koordineres tidligt.' },
-  { name: 'Elektriker', icon: '⚡', status: 'Senere ryk', tone: 'idle', note: 'Placering af køkken, ø og vægge skal låses før el-plan.' },
+  {
+    name: 'Arkitekt / rådgiver',
+    status: 'Prioritet nu',
+    tone: 'warn',
+    action: 'Lås plan og prioriteringer',
+  },
+  {
+    name: 'Murer',
+    status: 'Klar når oplæg er låst',
+    tone: 'idle',
+    action: 'Vurdér bærende vægge, sokkel og facade',
+  },
+  {
+    name: 'Tømrer',
+    status: 'Klar til tidlig dialog',
+    tone: 'ok',
+    action: 'Skitsér åbninger, køkkenzone og indvendige vægge',
+  },
+  {
+    name: 'VVS',
+    status: 'Afventer bad/køkkenvalg',
+    tone: 'warn',
+    action: 'Lav grov rørstrategi inkl. faldstammer',
+  },
+  {
+    name: 'Elektriker',
+    status: 'Afventer planløsning',
+    tone: 'idle',
+    action: 'Forbered el-zoner for køkken, lys og data',
+  },
 ]
 
-const milestones = [
-  'Materialeprøver og asbestafklaring',
-  'Lås planløsning og facadegreb',
-  'Vælg rådgiver / arkitekt til næste fase',
-  'Indhent sammenlignelige tilbud',
-  'Planlæg udførelse i etaper',
+const updates = [
+  {
+    date: '27. april 2026',
+    text: 'Projektportalen er opdateret med konkret ugeplan, blokkere og næste handlinger.',
+  },
+  {
+    date: 'Næste skridt',
+    text: 'Erstat eksempeldata med rigtige ansvarlige, budgettal og datoer fra jeres møder.',
+  },
 ]
 
-const log = [
-  { date: 'Nu', text: 'Projektplatform etableret som fælles overblik for familien, rådgivere og håndværkere.' },
-  { date: 'Næste', text: 'Tilføj rigtige datoer, kontaktpersoner og beslutninger efterhånden som projektet falder på plads.' },
-]
+function StatusPill({ tone, children }) {
+  return <span className={`pill ${tone}`}>{children}</span>
+}
 
 export default function Home() {
   return (
     <main className="page">
-      <section className="hero">
-        <nav className="nav">
-          <div className="brand">Ombygning</div>
-          <div className="links"><span>Overblik</span><span>Plan</span><span>Fremdrift</span><span>Dokumenter</span></div>
-        </nav>
-        <div className="heroGrid">
-          <div>
-            <p className="eyebrow">Projektportal</p>
-            <h1>Et roligt overblik over et komplekst byggeprojekt.</h1>
-            <p className="lead">Samlet status, næste ryk, faggrupper og fremdrift – bygget til at kunne bruges på mobilen af både jer og håndværkere.</p>
-            <div className="actions"><button>✅ Jeg er færdig</button><button>🚀 Klar til næste ryk</button><button>❓ Jeg mangler svar</button></div>
+      <section className="hero card">
+        <p className="eyebrow">Ombygning · fælles cockpit</p>
+        <h1>Nu har I ét sted, der viser hvad der blokerer og hvad der skal ske først.</h1>
+        <p className="lead">
+          Siden er gjort klar som et arbejdsværktøj: tydelig status, konkret ugeplan og klare ejere på næste handlinger.
+        </p>
+
+        <div className="healthGrid">
+          {projectHealth.map((item) => (
+            <article key={item.label} className="statBox">
+              <p>{item.label}</p>
+              <strong>{item.value}</strong>
+              <StatusPill tone={item.tone}>{item.tone === 'ok' ? 'Sund' : item.tone === 'warn' ? 'Kræver fokus' : 'Kritisk'}</StatusPill>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="sectionGrid">
+        <section className="card">
+          <p className="label">Køreplan</p>
+          <h2>Plan for de næste 3 uger</h2>
+          <div className="stack">
+            {weeklyPlan.map((block) => (
+              <article key={block.week} className="timelineItem">
+                <header>
+                  <strong>{block.week}</strong>
+                  <span>{block.focus}</span>
+                </header>
+                <ul>
+                  {block.tasks.map((task) => (
+                    <li key={task}>{task}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
-          <aside className="statusCard">
-            <p className="label">Aktuel status</p>
-            <div className="statusPill">Planlægning</div>
-            <h2>Næste ryk afklares</h2>
-            <p>Fokus er at lukke rådgiver, planløsning og risici, før håndværkerne sættes i gang.</p>
-          </aside>
+        </section>
+
+        <section className="card">
+          <p className="label">Flaskehalse</p>
+          <h2>Det der stopper fremdriften</h2>
+          <div className="stack">
+            {blockers.map((item) => (
+              <article key={item.title} className="blocker">
+                <h3>{item.title}</h3>
+                <p><strong>Konsekvens:</strong> {item.impact}</p>
+                <p><strong>Ejer:</strong> {item.owner}</p>
+                <p><strong>Næste handling:</strong> {item.next}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </section>
+
+      <section className="card">
+        <p className="label">Faggrupper</p>
+        <h2>Hvem kan aktiveres hvornår?</h2>
+        <div className="trades">
+          {trades.map((trade) => (
+            <article className="trade" key={trade.name}>
+              <h3>{trade.name}</h3>
+              <StatusPill tone={trade.tone}>{trade.status}</StatusPill>
+              <p>{trade.action}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="section gridTwo">
-        <div className="panel">
-          <p className="label">Næste milepæle</p>
-          <h2>Projektplan</h2>
-          <ol className="timeline">{milestones.map((m, i) => <li key={m}><span>{i + 1}</span>{m}</li>)}</ol>
-        </div>
-        <div className="panel dark">
-          <p className="label">Næste beslutning</p>
-          <h2>Hvad blokerer?</h2>
-          <p>Projektet skal væk fra stilstand og over i en klar rækkefølge: afklar risiko, lås retning, vælg rådgiver og giv faggrupper konkrete næste opgaver.</p>
-        </div>
-      </section>
+      <section className="sectionGrid">
+        <section className="card">
+          <p className="label">Seneste opdatering</p>
+          <h2>Log</h2>
+          {updates.map((entry) => (
+            <div key={entry.date} className="logItem">
+              <strong>{entry.date}</strong>
+              <p>{entry.text}</p>
+            </div>
+          ))}
+        </section>
 
-      <section className="section">
-        <div className="sectionHeader"><p className="label">Faggrupper</p><h2>Hvem er klar til hvad?</h2></div>
-        <div className="cards">{trades.map((t) => <article className="trade" key={t.name}><div className="icon">{t.icon}</div><div><h3>{t.name}</h3><span className={`badge ${t.tone}`}>{t.status}</span><p>{t.note}</p></div></article>)}</div>
-      </section>
-
-      <section className="section gridTwo">
-        <div className="panel">
-          <p className="label">Fremdriftslog</p>
-          <h2>Seneste noter</h2>
-          {log.map(item => <div className="log" key={item.date}><strong>{item.date}</strong><p>{item.text}</p></div>)}
-        </div>
-        <div className="panel">
-          <p className="label">Dokumenter</p>
-          <h2>Kommer her</h2>
-          <p>Tilbud, tegninger, materialeprøver, billeder og beslutningsreferater kan samles her i næste version.</p>
-        </div>
+        <section className="card">
+          <p className="label">Praktisk næste step</p>
+          <h2>For at gå fra plan til udførelse</h2>
+          <ol className="checklist">
+            <li>Indsæt jeres rigtige deadline for hver opgave i ugeplanen.</li>
+            <li>Tilføj kontaktperson og telefon på hver faggruppe.</li>
+            <li>Flyt afsluttede punkter til loggen og marker nye blokkere.</li>
+          </ol>
+        </section>
       </section>
     </main>
   )
